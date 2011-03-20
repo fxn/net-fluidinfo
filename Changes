@@ -1,0 +1,10 @@
+Revision history for Net-FluidDB
+
+0.40    2011-03-20
+        * FluidDB has been renamed to Fluidinfo. This module is a
+          rename of Net:FluidDB at version 0.30. Net::FluidDB is
+          not going to be maintained anymore, development continues
+          here.
+
+        * To migrate a program that used Net::FluidDB basically
+          s/FluidDB/Fluidinfo/g, and s/fdb/fin/g.
