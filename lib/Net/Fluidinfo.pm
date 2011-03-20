@@ -13,7 +13,7 @@ use Net::Fluidinfo::Policy;
 use Net::Fluidinfo::Permission;
 use Net::Fluidinfo::User;
 
-our $VERSION           = '0.40';
+our $VERSION           = 'development';
 our $USER_AGENT        = "Net::Fluidinfo/$VERSION ($^O)";
 our $DEFAULT_PROTOCOL  = 'HTTP';
 our $DEFAULT_HOST      = 'fluiddb.fluidinfo.com';
