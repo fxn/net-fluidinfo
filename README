@@ -6,14 +6,14 @@ INSTALLATION
 
 To install this module, run the following command (probably as root):
 
-  cpan Net::Fluidinfo
+    cpan Net::Fluidinfo
 
 If you got a tarball the old-school way of installing is:
 
-	perl Makefile.PL
-	make
-	make test
-	make install
+    perl Makefile.PL
+    make
+    make test
+    make install
 
 SUPPORT AND DOCUMENTATION
 
