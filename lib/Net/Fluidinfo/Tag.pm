@@ -67,6 +67,33 @@ sub get {
     );
 }
 
+{
+    my %tags; # cache
+    sub get_or_create {
+        my ($class, $fin, %params) = @_;
+        my $tag         = $params{tag}    or die "No tag provided";
+        my $description = $params{description};
+
+        my $tag_object = $tags{$tag} ||= do {
+            my ($path,$name) = $tag=~m{^(.*)/(.*)$};
+
+            my $ns = $fin->get_or_create_namespace(path => $path);
+
+            # create the tag in case it doesn't exist
+            my $obj = Net::Fluidinfo::Tag->new(
+                fin         => $fin,
+                description => $description // $tag,
+                path        => $tag,
+                indexed     => 1,
+            );
+            $obj->create;
+            $obj;
+        };
+
+        return $tag_object;
+    }
+}
+
 sub update {
     my $self = shift;
 
@@ -192,6 +219,12 @@ Retrieves the tag with path C<$path> from Fluidinfo. Options are:
 Tells C<get> whether you want to fetch the description.
 
 =back
+
+C<Net::Fluidinfo> provides a convenience shortcut for this method.
+
+=item Net::Fluidinfo::Tag->get_or_create($fin, tag => $tag)
+
+Retrieves or creates the tag with path C<$path> from Fluidinfo. 
 
 C<Net::Fluidinfo> provides a convenience shortcut for this method.
 

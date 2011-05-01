@@ -66,6 +66,39 @@ sub get {
     );
 }
 
+{
+my %namespaces; # cache
+    sub get_or_create {
+        my ($class, $fin, %params) = @_;
+        my $path = $params{path} or die "No path provided";
+
+        if (my $cached = $namespaces{$path}) { return $cached }
+
+        my (@path, $ns);
+
+        for my $item (split '/', $path) {
+            push @path, $item;
+            my $path = join '/', @path;
+            $ns = $namespaces{$path} 
+                ||= $fin->get_namespace($path, description=>1, tag_names => 1, namespace_names => 1)
+                || do {
+                    my $ns = $class->new( 
+                        fin         => $fin,
+                        path        => $path,
+                        description => $path, # why is this obligatory?  We'll just set a dummy here for now
+                    );
+                    $ns->create;
+                    $ns;
+                };
+        }
+        if (my $description = $params{description}) {
+            $ns->description($description); # update description for end namespace, if provided
+            $ns->update;
+        }
+        return $ns;
+    }
+}
+
 # Normal usage is to set description and path of self.
 sub update {
     my $self = shift;
@@ -195,6 +228,12 @@ Tells C<get> whether you want to fetch the names of child namespaces.
 Tells C<get> whether you want to fetch the names of child tags.
 
 =back
+
+C<Net::Fluidinfo> provides a convenience shortcut for this method.
+
+=item Net::Fluidinfo::Namespace->get_or_create($fin, path => $path)
+
+Retrieves or creates the namespace with path C<$path> from Fluidinfo.
 
 C<Net::Fluidinfo> provides a convenience shortcut for this method.
 

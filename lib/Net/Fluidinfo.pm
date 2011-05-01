@@ -28,6 +28,9 @@ has ua       => (is => 'ro', isa => 'LWP::UserAgent', writer => '_set_ua');
 has user     => (is => 'ro', isa => 'Net::Fluidinfo::User', lazy_build => 1);
 has md5      => (is => 'rw', isa => 'Bool');
 
+has last_error_response => ( is => 'rw', isa => 'HTTP::Response' );
+has on_failure          => ( is => 'rw', isa => 'CodeRef' );
+
 sub BUILD {
     my ($self, $attrs) = @_;
 
@@ -39,6 +42,10 @@ sub BUILD {
         $ua->add_handler("response_done",  sub { shift->dump; return });
     }
     $self->_set_ua($ua);
+
+    if ($attrs->{quiet}) {
+        $self->on_failure( $self->_make_quiet_failure );
+    }
 }
 
 sub _build_user {
@@ -107,12 +114,21 @@ sub request {
             1;
         }
     } else {
-        if (exists $opts{on_failure}) {
-            $opts{on_failure}->($response);
+        if (my $on_failure = $opts{on_failure} || $self->on_failure) {
+            $on_failure->($response);
         } else {
             print STDERR $response->as_string;
             0;
         }
+    }
+}
+
+sub _make_quiet_failure {
+    my $self = shift;
+    return sub {
+        my $response = shift;
+        $self->last_error_response( $response );
+        return;
     }
 }
 
@@ -161,6 +177,18 @@ sub get_object_by_id {
 
 sub get_object_by_about {
     Net::Fluidinfo::Object->get_by_about(@_);
+}
+
+sub get_or_create_object {
+    Net::Fluidinfo::Object->get_or_create(@_);
+}
+
+sub get_or_create_namespace {
+    Net::Fluidinfo::Namespace->get_or_create(@_);
+}
+
+sub get_or_create_tag {
+    Net::Fluidinfo::Tag->get_or_create(@_);
 }
 
 sub search {
@@ -215,6 +243,10 @@ Net::Fluidinfo - A Perl interface to Fluidinfo
  # FLUIDINFO_USERNAME and FLUIDINFO_PASSWORD
  $fin = Net::Fluidinfo->new;
 
+ # On failure, return false but set $fin->last_error_response
+ # This is useful for the autovivifying helpers
+ $fin = Net::Fluidinfo->new( quiet => 1 );
+
  # Content-MD5 headers with checksums for requests with payload
  $fin = Net::Fluidinfo->new(md5 => 1)
 
@@ -226,6 +258,16 @@ Net::Fluidinfo - A Perl interface to Fluidinfo
  $policy     = $fin->get_policy($user, $category, $action);
  $permission = $fin->get_permission($category, $path, $action);
  $user       = $fin->get_user($username);
+
+ # Auto-vivifying resource getters
+ $object     = $fin->get_or_create_object( about => $about );
+ $ns         = $fin->get_or_create_namespace( 
+                   path => $path, description => $description);
+ $tag        = $fin->get_or_create_tag(
+                   tag  => $tag,  description => $description);
+ 
+ # Auto-vivifying tag
+ $object->tag_autovivify( $tag_name, string => "Hello world!" );
 
  # Object search
  @ids = $fin->search("has fxn/rating");
