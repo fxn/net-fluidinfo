@@ -5,6 +5,8 @@ use FindBin qw($Bin);
 use lib $Bin;
 
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
 use Net::Fluidinfo::TestUtils;
 
@@ -53,5 +55,11 @@ ok $tag2->description eq $tag->description;
 
 # delete it
 ok $tag->delete;
+
+# fetch unexistant tag
+throws_ok { Net::Fluidinfo::Tag->get($fin, $path) } qr/404/;
+
+# fetch tag from unexistant namespace
+throws_ok { Net::Fluidinfo::Tag->get($fin, "$path/" . random_name) } qr/404/;
 
 done_testing;

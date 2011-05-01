@@ -19,6 +19,7 @@ our $DEFAULT_PROTOCOL  = 'HTTP';
 our $DEFAULT_HOST      = 'fluiddb.fluidinfo.com';
 our $SANDBOX_HOST      = 'sandbox.fluidinfo.com';
 our $JSON_CONTENT_TYPE = 'application/json';
+our $ERROR_HEADER      = 'X-Fluiddb-Error-Class';
 
 has protocol => (is => 'rw', isa => 'Str', default => $DEFAULT_PROTOCOL);
 has host     => (is => 'rw', isa => 'Str', default => $DEFAULT_HOST);
@@ -111,7 +112,7 @@ sub request {
             $opts{on_failure}->($response);
         } else {
             print STDERR $response->as_string;
-            0;
+            die $response->code . ' ' . $response->header($ERROR_HEADER);
         }
     }
 }

@@ -5,6 +5,8 @@ use FindBin qw($Bin);
 use lib $Bin;
 
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
 use Net::Fluidinfo::TestUtils;
 
@@ -55,6 +57,10 @@ ok @{$object->tag_paths} == 1;
 ok $object->tag_paths->[0] eq 'fluiddb/about';
 $object2 = Net::Fluidinfo::Object->get_by_id($fin, $object->id);
 ok_sets_cmp $object->tag_paths, $object2->tag_paths;
+
+# fetches a non existant object by about
+throws_ok { $object = Net::Fluidinfo::Object->get_by_about($fin, random_about); } qr/404/;
+
 
 # Now we are gonna do some variations just in case, but the proper place to
 # test them is the suite of the Tag class.
