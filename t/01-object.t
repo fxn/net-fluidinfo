@@ -23,12 +23,19 @@ ok $object->create;
 ok $object->has_id;
 ok $object->about eq $about;
 
+# try to create an object with the same about
+$object2 = Net::Fluidinfo::Object->new(fin => $fin, about => $about);
+ok $object2->create;
+ok $object2->has_id;
+ok $object2->about eq $about;
+ok $object2->id eq $object->id;
+
 # fetches that very object by id
 $object2 = Net::Fluidinfo::Object->get_by_id($fin, $object->id, about => 1);
 ok $object2->id eq $object->id;
 ok $object2->about eq $object->about;
 
-# fetches that very object by id
+# fetches that very object by about
 $object3 = Net::Fluidinfo::Object->get_by_about($fin, $about);
 ok $object3->id eq $object->id;
 ok $object3->about eq $object->about;
@@ -58,9 +65,11 @@ ok $object->tag_paths->[0] eq 'fluiddb/about';
 $object2 = Net::Fluidinfo::Object->get_by_id($fin, $object->id);
 ok_sets_cmp $object->tag_paths, $object2->tag_paths;
 
-# fetches a non existant object by about
-throws_ok { $object = Net::Fluidinfo::Object->get_by_about($fin, random_about); } qr/404/;
+# fetches a non existant object by id
+throws_ok { Net::Fluidinfo::Object->get_by_id($fin, random_name); } qr/404/;
 
+# fetches a non existant object by about
+throws_ok { Net::Fluidinfo::Object->get_by_about($fin, random_about); } qr/404/;
 
 # Now we are gonna do some variations just in case, but the proper place to
 # test them is the suite of the Tag class.

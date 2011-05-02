@@ -112,7 +112,9 @@ sub request {
             $opts{on_failure}->($response);
         } else {
             print STDERR $response->as_string;
-            die $response->code . ' ' . $response->header($ERROR_HEADER);
+            my $error = $response->code;
+            $error .= $response->header($ERROR_HEADER) if ($error != 500);
+            die $error;
         }
     }
 }

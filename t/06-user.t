@@ -1,8 +1,14 @@
 use strict;
 use warnings;
 
+use FindBin qw($Bin);
+use lib $Bin;
+
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
+use Net::Fluidinfo::TestUtils;
 
 use_ok('Net::Fluidinfo::User');
 
@@ -12,5 +18,8 @@ foreach my $username ('test', 'fxn') {
     ok $user->username eq $username;
     ok $user->name eq $username;
 }
+
+# fetch unexistant user
+throws_ok { Net::Fluidinfo::User->get($fin, random_name) } qr/404/;
 
 done_testing;

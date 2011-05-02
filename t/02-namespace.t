@@ -5,6 +5,8 @@ use FindBin qw($Bin);
 use lib $Bin;
 
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
 use Net::Fluidinfo::TestUtils;
 
@@ -34,7 +36,17 @@ ok $ns2->name eq $name;
 ok $ns2->parent;
 ok $ns2->parent->name eq $fin->username;
 ok $ns2->path_of_parent eq $fin->username;
+
+# try to create it again
+throws_ok { $ns2->create } qr/412/;
+
 ok $ns2->delete;
+
+# path too long, and not found errors
+$ns2 = Net::Fluidinfo::Namespace->new(fin => $fin, path => "$path$path$path$path");
+throws_ok { $ns2->create } qr/400/;
+throws_ok { $ns2->update } qr/404/;
+throws_ok { $ns2->delete } qr/404/;
 
 # creates a child namespace via parent namespace
 $name = random_name;
@@ -97,6 +109,9 @@ ok_sets_cmp $parent->namespace_names, \@namespace_names;
 ok_sets_cmp $parent->tag_names, \@tag_names;
 
 ok $_->delete for @tags;
+
+# fetch an unexistant namespace
+throws_ok { Net::Fluidinfo::Namespace->get($fin, random_name) } qr/404/;
 
 done_testing;
 
