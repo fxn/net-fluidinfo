@@ -13,6 +13,16 @@ use Net::Fluidinfo::Policy;
 use Net::Fluidinfo::Permission;
 use Net::Fluidinfo::User;
 
+use Carp;
+our @CARP_NOT = qw(
+    Net::Fluidinfo::Object
+    Net::Fluidinfo::Namespace
+    Net::Fluidinfo::Tag
+    Net::Fluidinfo::Policy
+    Net::Fluidinfo::Permission
+    Net::Fluidinfo::User
+);
+
 our $VERSION           = 'development';
 our $USER_AGENT        = "Net::Fluidinfo/$VERSION ($^O)";
 our $DEFAULT_PROTOCOL  = 'HTTP';
@@ -111,10 +121,14 @@ sub request {
         if (exists $opts{on_failure}) {
             $opts{on_failure}->($response);
         } else {
-            print STDERR $response->as_string;
-            my $error = $response->code;
-            $error .= $response->header($ERROR_HEADER) if ($error != 500);
-            die $error;
+            my $code = $response->code;
+            if ($code == 500) {
+                # If we got a 500, it is not caller's problem, so die
+                die $code.' '.$response->message;
+            } else {
+                # We didn't got a 500, so probably this is caller's fault
+                croak $code.' '.$response->header($ERROR_HEADER);
+            }
         }
     }
 }
