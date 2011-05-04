@@ -90,19 +90,19 @@ C<Net::Fluidinfo> provides a convenience shortcut for this method.
 
 =over
 
-=item $tag->update
+=item $permission->update
 
 Updates the permission in Fluidinfo.
 
-=item $tag->category
+=item $permission->category
 
 Returns the category the permission is about.
 
-=item $tag->path
+=item $permission->path
 
 Returns the path of the category the permission is about.
 
-=item $tag->action
+=item $permission->action
 
 Returns the action the permission is about.
 
