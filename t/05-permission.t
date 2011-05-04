@@ -5,6 +5,8 @@ use FindBin qw($Bin);
 use lib $Bin;
 
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
 use Net::Fluidinfo::Namespace;
 use Net::Fluidinfo::Tag;
@@ -140,7 +142,9 @@ foreach my $category (keys %{Net::Fluidinfo::Permission->Actions}) {
     $perm->policy('closed');
     $perm->exceptions([]);
     ok $perm->update;
-    # can't read this back, when we implement exceptions we could try and catch here (TODO) 
+
+    # can't read this back, so we could try and catch
+    throws_ok { Net::Fluidinfo::Permission->get($fin, $category, $paths{$category}, 'control') } qr/401/;
 }
 
 done_testing;

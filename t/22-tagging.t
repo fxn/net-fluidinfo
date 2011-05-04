@@ -5,6 +5,8 @@ use FindBin qw($Bin);
 use lib $Bin;
 
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
 use Net::Fluidinfo::Object;
 use Net::Fluidinfo::Tag;
@@ -29,6 +31,11 @@ $tag = Net::Fluidinfo::Tag->new(
     indexed     => 1,
     path        => $path
 );
+
+# try to tag and untag with unexistant tag
+throws_ok { $object->tag($tag) } qr/404/;
+throws_ok { $object->untag($tag)  } qr/404/;
+
 ok $tag->create;
 
 ok $object->tag($tag);
@@ -144,6 +151,7 @@ ok $value == 0;
 ($type, $value) = $object->value($tag);
 ok $type eq 'float';
 ok $value == 0;
+
 
 ok $object->tag($tag, float => 0.5);
 $value = $object->value($tag);

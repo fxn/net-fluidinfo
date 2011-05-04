@@ -5,6 +5,8 @@ use FindBin qw($Bin);
 use lib $Bin;
 
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
 use Net::Fluidinfo::TestUtils;
 
@@ -33,6 +35,9 @@ ok $tag->path_of_parent eq $fin->username;
 ok $tag->namespace->name eq $fin->username;
 ok $tag->path eq $path;
 
+# Try to create it again
+throws_ok { $tag->create } qr/412/;
+
 # fetch it
 $tag2 = Net::Fluidinfo::Tag->get($fin, $tag->path, description => 1);
 ok $tag2->description eq $tag->description;
@@ -53,5 +58,23 @@ ok $tag2->description eq $tag->description;
 
 # delete it
 ok $tag->delete;
+
+# create in an unexistant path
+$tag = Net::Fluidinfo::Tag->new(
+    fin         => $fin,
+    description => $description,
+    indexed     => 1,
+    path        => "$path/" . random_name,
+);
+throws_ok { $tag->create } qr/404/;
+throws_ok { $tag->update } qr/404/;
+throws_ok { $tag->delete } qr/404/;
+
+# fetch unexistant tag
+throws_ok { Net::Fluidinfo::Tag->get($fin, $path) } qr/404/;
+
+# fetch tag from unexistant namespace
+throws_ok { Net::Fluidinfo::Tag->get($fin, "$path/" . random_name) } qr/404/;
+
 
 done_testing;

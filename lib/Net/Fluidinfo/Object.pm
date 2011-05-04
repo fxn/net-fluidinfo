@@ -114,18 +114,6 @@ sub has_tag {
     $fin->head(
         path       => $class->abs_path('/objects', $object_id, $tag_path),
         on_success => sub { 1 },
-        on_failure => sub {
-            my $response = shift;
-
-            if ($response->code == 404) {
-                0;
-            } else {
-                # Can be a 401 if permissions disallow this test. Do this as we
-                # do elsewhere until we get proper support for failures.
-                print STDERR $response->as_string;
-                0;
-            }
-        }
     );
 }
 

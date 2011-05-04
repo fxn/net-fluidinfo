@@ -159,19 +159,19 @@ These are convenience methods, there's one for each defined pair action/category
 
 =over
 
-=item $tag->update
+=item $policy->update
 
 Updates the policy in Fluidinfo.
 
-=item $tag->username
+=item $policy->username
 
 Returns the username of the user the policy concerns to.
 
-=item $tag->category
+=item $policy->category
 
 Returns the category the policy is about.
 
-=item $tag->action
+=item $policy->action
 
 Returns the action the policy is about.
 

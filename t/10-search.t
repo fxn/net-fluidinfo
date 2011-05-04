@@ -5,6 +5,8 @@ use FindBin qw($Bin);
 use lib $Bin;
 
 use Test::More;
+use Test::Exception;
+
 use Net::Fluidinfo;
 use Net::Fluidinfo::Object;
 use Net::Fluidinfo::Tag;
@@ -51,5 +53,8 @@ ok_sets_cmp \@ids, [];
 
 @ids = Net::Fluidinfo::Object->search($fin, "$path < -3");
 ok_sets_cmp \@ids, [];
+
+# query string could not be parsed;
+throws_ok { Net::Fluidinfo::Object->search($fin, random_name) } qr/400/;
 
 done_testing;

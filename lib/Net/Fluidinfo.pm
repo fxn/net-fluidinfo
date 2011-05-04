@@ -13,12 +13,23 @@ use Net::Fluidinfo::Policy;
 use Net::Fluidinfo::Permission;
 use Net::Fluidinfo::User;
 
+use Carp;
+our @CARP_NOT = qw(
+    Net::Fluidinfo::Object
+    Net::Fluidinfo::Namespace
+    Net::Fluidinfo::Tag
+    Net::Fluidinfo::Policy
+    Net::Fluidinfo::Permission
+    Net::Fluidinfo::User
+);
+
 our $VERSION           = 'development';
 our $USER_AGENT        = "Net::Fluidinfo/$VERSION ($^O)";
 our $DEFAULT_PROTOCOL  = 'HTTP';
 our $DEFAULT_HOST      = 'fluiddb.fluidinfo.com';
 our $SANDBOX_HOST      = 'sandbox.fluidinfo.com';
 our $JSON_CONTENT_TYPE = 'application/json';
+our $ERROR_HEADER      = 'X-Fluiddb-Error-Class';
 
 has protocol => (is => 'rw', isa => 'Str', default => $DEFAULT_PROTOCOL);
 has host     => (is => 'rw', isa => 'Str', default => $DEFAULT_HOST);
@@ -110,8 +121,14 @@ sub request {
         if (exists $opts{on_failure}) {
             $opts{on_failure}->($response);
         } else {
-            print STDERR $response->as_string;
-            0;
+            my $code = $response->code;
+            if ($code == 500) {
+                # If we got a 500, it is not caller's problem, so die
+                die $code.' '.$response->message;
+            } else {
+                # We didn't got a 500, so probably this is caller's fault
+                croak $code.' '.$response->header($ERROR_HEADER);
+            }
         }
     }
 }
