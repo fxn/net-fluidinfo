@@ -9,6 +9,7 @@ our @EXPORT = qw(
     skip_suite_unless_run_all
     ok_sets_cmp
     ok_dies
+    tolerate_delay
 );
 
 use Time::HiRes 'time';
@@ -57,6 +58,19 @@ sub skip_suite_unless_run_all {
     unless ($ENV{NET_FLUIDINFO_RUN_FULL_SUITE}) {
        plan skip_all => "set NET_FLUIDINFO_RUN_FULL_SUITE to run these";
        exit 0;
+    }
+}
+
+sub tolerate_delay(&) {
+    my $code = shift;
+
+    SKIP: {
+        for (my $n = 0; $n < 10; ++$n) {
+            return if $code->();
+            sleep 1;
+        }
+
+        skip "search is taking too long, skipping", 1;
     }
 }
 

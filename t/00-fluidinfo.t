@@ -123,9 +123,14 @@ foreach my $md5 (0, 1) {
     ok $tag->create;
     ok $object->tag($tag, integer => 0);
 
-    my @ids = $fin->search("$path = 0");
-    ok @ids == 1;
-    ok $ids[0] eq $object->id;
+    tolerate_delay {
+        my @ids = $fin->search("$path = 0");
+        if (@ids) {
+            ok @ids == 1;
+            ok $ids[0] eq $object->id;
+            1; # halt the wait loop no matter whether the assertion passes
+        }
+    };
 
     my $tag2 = $fin->get_tag($tag->path);
     ok $tag2->isa('Net::Fluidinfo::Tag');
