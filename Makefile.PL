@@ -17,7 +17,8 @@ WriteMakefile(
         'Moose'                  => 0,
         'MooseX::ClassAttribute' => 0,
         'JSON::XS'               => 0,
-        'Digest::MD5'            => 0
+        'Digest::MD5'            => 0,
+        'Data::UUID'             => 0, # for testing
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Net-Fluidinfo-*' },

@@ -43,6 +43,13 @@ sub get {
     &get_by_id;
 }
 
+sub get_or_create {
+    my ($class, $fin, %params) = @_;
+    my $o = $class->new(fin => $fin, %params);
+    $o->create;
+    return $o;
+}
+
 sub get_by_id {
     my ($class, $fin, $id, %opts) = @_;
 
@@ -105,6 +112,12 @@ sub tag {
     } else {
         croak "invalid call to Object->tag()";
     }
+}
+
+sub tag_autovivify {
+    my ($self, $tag_name, @value) = @_;
+    my $tag = $self->fin->get_or_create_tag(tag => $tag_name);
+    $self->tag( $tag, @value );
 }
 
 sub has_tag {
@@ -324,6 +337,12 @@ Retrieves the object with about C<$about> from Fluidinfo.
 
 C<Net::Fluidinfo> provides a convenience shortcut for this method.
 
+=item Net::Fluidinfo::Object->get_or_create($fin, about => $about)
+
+Retrieves or creates the object with about C<$about> from Fluidinfo.
+
+C<Net::Fluidinfo> provides a convenience shortcut for this method.
+
 =item Net::Fluidinfo::Object->search($fin, $query)
 
 Performs the query C<$query> and returns a (possibly empty) array of strings with
@@ -388,10 +407,18 @@ empty) arrayref of strings.
 
 =item $object->tag($tag_or_tag_path, $type => $value)
 
+=item $object->tag_autovivify($tag)
+
+=item $object->tag_autovivify($tag, $value)
+
+=item $object->tag_autovivify($tag, $type => $value)
+
 Tags an object.
 
 You can pass either a L<Net::Fluidinfo::Tag> instance or a tag path
 in the first argument.
+
+The C<tag_autovivify> will create a Tag object if one does not already exist.
 
 =over
 
