@@ -9,7 +9,7 @@ class_has Actions => (
     default => sub {{
         'namespaces' => [qw(create update delete list control)],
         'tags'       => [qw(update delete control)],
-        'tag-values' => [qw(create read delete control)]
+        'tag-values' => [qw(write read delete control)]
     }}
 );
 
