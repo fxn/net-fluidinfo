@@ -1,5 +1,9 @@
 Revision history for Net-Fluidinfo
 
+0.42	(Unreleased)
+		* /policies is gone and so is Net::Fluidinfo::Policy,
+		  now permissions inherit defaults from their parent.
+
 0.41    2011-08-16
         * Changes are no longer available in searches immediately.
           This release only adds a delay tolerance to the test suite.

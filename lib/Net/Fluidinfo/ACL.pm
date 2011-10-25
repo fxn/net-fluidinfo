@@ -48,14 +48,13 @@ Net::Fluidinfo::ACL - A common ancestor for classes that provide an ACL
  $permission->policy('open');
  my $exceptions = $permission->exceptions;
  
- $policy->is_open;
- $policy->is_closed;
- $policy->has_exceptions;
+ $permission->is_open;
+ $permission->is_closed;
+ $permission->has_exceptions;
 
 =head1 DESCRIPTION
 
-C<Net::Fluidinfo::ACL> is a parent class of L<Net::Fluidinfo::Policy> and
-L<Net::Fluidinfo::Permission>.
+C<Net::Fluidinfo::ACL> is a parent class of L<Net::Fluidinfo::Permission>.
 
 You don't usually need this class, only the interface its children inherit.
 
@@ -69,8 +68,7 @@ You don't usually need this class, only the interface its children inherit.
 
 =item $acl->policy('open'|'closed')
 
-Sets/gets the policy, which must be either 'open' or 'closed'. Note this is not an
-instance of L<Net::Fluidinfo::Policy> (the name clash is inherited from the API).
+Sets/gets the policy, which must be either 'open' or 'closed'.
 
 =item $acl->exceptions
 

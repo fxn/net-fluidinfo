@@ -9,7 +9,6 @@ use Digest::MD5 'md5_base64';
 use Net::Fluidinfo::Object;
 use Net::Fluidinfo::Namespace;
 use Net::Fluidinfo::Tag;
-use Net::Fluidinfo::Policy;
 use Net::Fluidinfo::Permission;
 use Net::Fluidinfo::User;
 
@@ -175,10 +174,6 @@ sub get_tag {
     Net::Fluidinfo::Tag->get(@_);
 }
 
-sub get_policy {
-    Net::Fluidinfo::Policy->get(@_);
-}
-
 sub get_permission {
     Net::Fluidinfo::Permission->get(@_);
 }
@@ -223,7 +218,6 @@ Net::Fluidinfo - A Perl interface to Fluidinfo
  $object     = $fin->get_object_by_about($about);
  $ns         = $fin->get_namespace($path, description => 1);
  $tag        = $fin->get_tag($path, description => 1);
- $policy     = $fin->get_policy($user, $category, $action);
  $permission = $fin->get_permission($category, $path, $action);
  $user       = $fin->get_user($username);
 
@@ -371,10 +365,6 @@ Convenience shortcut for C<Net::Fluidinfo::Namespace::get>, see L<Net::Fluidinfo
 =item $fin->get_tag
 
 Convenience shortcut for C<Net::Fluidinfo::Tag::get>, see L<Net::Fluidinfo::Tag>.
-
-=item $fin->get_policy
-
-Convenience shortcut for C<Net::Fluidinfo::Policy::get>, see L<Net::Fluidinfo::Policy>.
 
 =item $fin->get_permission
 

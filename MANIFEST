@@ -27,7 +27,6 @@ t/00-fluidinfo.t
 t/01-object.t
 t/02-namespace.t
 t/03-tag.t
-t/04-policy.t
 t/05-permission.t
 t/06-user.t
 t/07-has_object.t

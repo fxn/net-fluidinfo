@@ -8,7 +8,6 @@ use Test::More;
 use Net::Fluidinfo::Object;
 use Net::Fluidinfo::Namespace;
 use Net::Fluidinfo::Tag;
-use Net::Fluidinfo::Policy;
 use Net::Fluidinfo::Permission;
 use Net::Fluidinfo::User;
 use Net::Fluidinfo::TestUtils;
@@ -137,14 +136,7 @@ foreach my $md5 (0, 1) {
     ok $tag2->path eq $tag->path;
     ok $tag->delete;
 
-    my $policy = $fin->get_policy($user, 'namespaces', 'create');
-    ok $policy->isa('Net::Fluidinfo::Policy');
-    ok $policy->username eq $user->username;
-    ok $policy->category eq 'namespaces';
-    ok $policy->action eq 'create';
-
     my $permission = $fin->get_permission('namespaces', $user->username, 'create');
-    ok $policy->isa('Net::Fluidinfo::Policy');
     ok $permission->category eq 'namespaces';
     ok $permission->action eq 'create';
 

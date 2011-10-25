@@ -8,18 +8,10 @@ use Test::More;
 use Net::Fluidinfo;
 use Net::Fluidinfo::Namespace;
 use Net::Fluidinfo::Tag;
-use Net::Fluidinfo::Policy;
 use Net::Fluidinfo::TestUtils;
 
 sub is_permission {
     ok shift->isa('Net::Fluidinfo::Permission');
-}
-
-sub reset_policies {
-    my $fin = shift;
-    ok(Net::Fluidinfo::Policy->close_namespaces($fin));
-    ok(Net::Fluidinfo::Policy->close_tags($fin));
-    ok(Net::Fluidinfo::Policy->close_tag_values($fin));
 }
 
 sub check_perm {
@@ -52,8 +44,6 @@ $fin->password($password);
 
 # --- Seed data ---------------------------------------------------------------
 
-reset_policies($fin);
-
 $path = "$username/" . random_name;
 $ns = Net::Fluidinfo::Namespace->new(
     fin         => $fin,
@@ -79,8 +69,6 @@ my %paths = (
 
 
 # --- GET ---------------------------------------------------------------------
-
-reset_policies($fin);
 
 while (my ($category, $actions) = each %{Net::Fluidinfo::Permission->Actions}) {
     foreach my $action (@$actions) {
@@ -114,8 +102,6 @@ while (my ($category, $actions) = each %{Net::Fluidinfo::Permission->Actions}) {
 
 
 # --- PUT with control --------------------------------------------------------
-
-reset_policies($fin);
 
 foreach my $category (keys %{Net::Fluidinfo::Permission->Actions}) {
     foreach my $pname ('open', 'closed') {
