@@ -76,7 +76,7 @@ my $ns = Net::Fluidinfo::Namespace->new(
 ok $ns->create;
 
 foreach my $action (@{Net::Fluidinfo::Permission->Actions->{namespaces}}) {
-    my $perm = Net::Fluidinfo::Permission->get($fin, 'namespaces', $ns->path, $action);
+    my $perm = Net::Fluidinfo::Permission->get($fin, 'namespaces', $ns, $action);
     $perm->policy('closed');
     $perm->exceptions([$username]);
     ok $perm->update;
@@ -93,7 +93,7 @@ ok $tag->create;
 
 foreach my $category (qw(tags tag-values)) {
     foreach my $action (@{Net::Fluidinfo::Permission->Actions->{$category}}) {
-        my $perm = Net::Fluidinfo::Permission->get($fin, $category, $tag->path, $action);
+        my $perm = Net::Fluidinfo::Permission->get($fin, $category, $tag, $action);
         $perm->policy('closed');
         $perm->exceptions([$username]);
         ok $perm->update;

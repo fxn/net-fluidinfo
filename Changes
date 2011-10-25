@@ -11,6 +11,10 @@ Revision history for Net-Fluidinfo
         * Net::Fluidinfo::ACL is gone, it was a common ancestor
           for policies and permissions only meant to be used
           through inheritance.
+        
+        * The methods Net::Fluidinfo->get_permission, and
+          Net::Fluidinfo::Permission::get accept a namespace
+          or tag in addition to a path.
 
 0.41    2011-08-16
         * Changes are no longer available in searches immediately.

@@ -54,6 +54,11 @@ sub as_json_boolean {
     $flag ? JSON::XS::true : JSON::XS::false;
 }
 
+sub get_path_from_string_or_has_path {
+    my $string_or_has_path = $_[1];
+    ref($string_or_has_path) ? $string_or_has_path->path : $string_or_has_path;
+}
+
 no Moose;
 no MooseX::ClassAttribute;
 __PACKAGE__->meta->make_immutable;

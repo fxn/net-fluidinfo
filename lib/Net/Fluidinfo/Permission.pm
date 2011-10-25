@@ -35,8 +35,9 @@ sub has_exceptions {
 }
 
 sub get {
-    my ($class, $fin, $category, $path, $action) = @_;
+    my ($class, $fin, $category, $path_or_has_path, $action) = @_;
 
+    my $path = $class->get_path_from_string_or_has_path($path_or_has_path);
     $fin->get(
         path       => $class->abs_path('permissions', $category, $path),
         query      => { action => $action },
@@ -103,9 +104,11 @@ C<Net::Fluidinfo::Permission> models Fluidinfo permissions.
 
 =over
 
-=item Net::Fluidinfo::Permission->get($fin, $category, $path, $action)
+=item Net::Fluidinfo::Permission->get($fin, $category, $path_or_has_path, $action)
 
-Retrieves the permission on action C<$action>, for the category C<$category> and path C<$path>.
+Retrieves the permission on action C<$action>, for the category C<$category>
+and path extracted from C<$path>, which can be either a string with the very
+path, a namespace, or a tag.
 
 C<Net::Fluidinfo> provides a convenience shortcut for this method.
 

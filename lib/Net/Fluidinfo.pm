@@ -218,7 +218,7 @@ Net::Fluidinfo - A Perl interface to Fluidinfo
  $object     = $fin->get_object_by_about($about);
  $ns         = $fin->get_namespace($path, description => 1);
  $tag        = $fin->get_tag($path, description => 1);
- $permission = $fin->get_permission($category, $path, $action);
+ $permission = $fin->get_permission($category, $path_or_has_path, $action);
  $user       = $fin->get_user($username);
 
  # Object search

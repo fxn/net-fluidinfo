@@ -97,7 +97,7 @@ sub search {
 sub tag {
     my ($self, $tag_or_tag_path, @rest) = @_;
 
-    my $tag_path = $self->get_tag_path_from_tag_or_tag_path($tag_or_tag_path);
+    my $tag_path = $self->get_path_from_string_or_has_path($tag_or_tag_path);
     if (@rest < 2) {
         $self->tag_fin_value_or_scalar($tag_path, @rest);
     } elsif (@rest == 2) {
@@ -110,7 +110,7 @@ sub tag {
 sub has_tag {
     my ($class, $fin, $object_id, $tag_or_tag_path) = @_;
 
-    my $tag_path = $class->get_tag_path_from_tag_or_tag_path($tag_or_tag_path);
+    my $tag_path = $class->get_path_from_string_or_has_path($tag_or_tag_path);
     $fin->head(
         path       => $class->abs_path('/objects', $object_id, $tag_path),
         on_success => sub { 1 },
@@ -180,7 +180,7 @@ sub value {
     my ($self, $tag_or_tag_path, @rest) = @_;
     my $list_context = wantarray;
 
-    my $tag_path = $self->get_tag_path_from_tag_or_tag_path($tag_or_tag_path);
+    my $tag_path = $self->get_path_from_string_or_has_path($tag_or_tag_path);
     $self->fin->get(
         path       => $self->abs_path('objects', $self->id, $tag_path),
         on_success => sub {
@@ -192,11 +192,6 @@ sub value {
             $list_context ? ($value_object->type, $value_object->value) : $value_object->value;
         }
     );
-}
-
-sub get_tag_path_from_tag_or_tag_path {
-    my $tag_or_tag_path = $_[1];
-    ref($tag_or_tag_path) ? $tag_or_tag_path->path : $tag_or_tag_path;
 }
 
 sub is_tag_path_present {
@@ -211,7 +206,7 @@ sub is_tag_path_present {
 sub untag {
     my ($self, $tag_or_tag_path) = @_;
 
-    my $tag_path = $self->get_tag_path_from_tag_or_tag_path($tag_or_tag_path);
+    my $tag_path = $self->get_path_from_string_or_has_path($tag_or_tag_path);
     $self->fin->delete(
         path       => $self->abs_path('objects', $self->id, $tag_path),
         on_success => sub {
