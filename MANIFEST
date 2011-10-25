@@ -10,7 +10,6 @@ lib/Net/Fluidinfo/HasPath.pm
 lib/Net/Fluidinfo/Namespace.pm
 lib/Net/Fluidinfo/Object.pm
 lib/Net/Fluidinfo/Permission.pm
-lib/Net/Fluidinfo/Policy.pm
 lib/Net/Fluidinfo/Tag.pm
 lib/Net/Fluidinfo/User.pm
 lib/Net/Fluidinfo/Value.pm
