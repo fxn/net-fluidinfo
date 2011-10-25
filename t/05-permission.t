@@ -42,6 +42,15 @@ my $fin = Net::Fluidinfo->_new_for_net_fluidinfo_test_suite;
 $fin->username($username);
 $fin->password($password);
 
+# --- Close the top-level namespace -------------------------------------------
+
+foreach my $action (@{Net::Fluidinfo::Permission->Actions->{namespaces}}) {
+    my $perm = Net::Fluidinfo::Permission->get($fin, 'namespaces', $username, $action);
+    $perm->policy('closed');
+    $perm->exceptions([$username]);
+    ok $perm->update;
+}
+
 # --- Seed data ---------------------------------------------------------------
 
 $path = "$username/" . random_name;
@@ -52,6 +61,13 @@ $ns = Net::Fluidinfo::Namespace->new(
 );
 ok $ns->create;
 
+foreach my $action (@{Net::Fluidinfo::Permission->Actions->{namespaces}}) {
+    my $perm = Net::Fluidinfo::Permission->get($fin, 'namespaces', $ns->path, $action);
+    $perm->policy('closed');
+    $perm->exceptions([$username]);
+    ok $perm->update;
+}
+
 $path = "$username/" . random_name;
 $tag = Net::Fluidinfo::Tag->new(
     fin         => $fin,
@@ -61,25 +77,20 @@ $tag = Net::Fluidinfo::Tag->new(
 );
 ok $tag->create;
 
+foreach my $category (qw(tags tag-values)) {
+    foreach my $action (@{Net::Fluidinfo::Permission->Actions->{$category}}) {
+        my $perm = Net::Fluidinfo::Permission->get($fin, $category, $tag->path, $action);
+        $perm->policy('closed');
+        $perm->exceptions([$username]);
+        ok $perm->update;
+    }    
+}
+
 my %paths = (
     'namespaces' => $ns->path,
     'tags'       => $tag->path,
-    'tag-values' => $tag->path
+    'tag-values' => $tag->path,
 );
-
-
-# --- GET ---------------------------------------------------------------------
-
-while (my ($category, $actions) = each %{Net::Fluidinfo::Permission->Actions}) {
-    foreach my $action (@$actions) {
-        my $perm = Net::Fluidinfo::Permission->get($fin, $category, $paths{$category}, $action);
-        is_permission $perm;
-
-        ok $perm->is_closed;
-        ok_sets_cmp $perm->exceptions, [$username];
-    }
-}
-
 
 # --- PUT except for control --------------------------------------------------
 
@@ -87,7 +98,7 @@ while (my ($category, $actions) = each %{Net::Fluidinfo::Permission->Actions}) {
     foreach my $action (@$actions) {
         next if $action eq 'control';
         foreach my $pname ('open', 'closed') {
-            foreach my $exceptions ([], ['foo'], ['foo', 'bar', 'baz', 'woo', 'zoo']) {
+            foreach my $exceptions ([], ['fxn'], ['net-fluiddb', 'test']) {
                 my $perm = Net::Fluidinfo::Permission->get($fin, $category, $paths{$category}, $action);
                 is_permission $perm;
 
@@ -100,12 +111,11 @@ while (my ($category, $actions) = each %{Net::Fluidinfo::Permission->Actions}) {
     }
 }
 
-
 # --- PUT with control --------------------------------------------------------
 
 foreach my $category (keys %{Net::Fluidinfo::Permission->Actions}) {
     foreach my $pname ('open', 'closed') {
-        foreach my $exceptions ([], ['foo'], ['foo', 'bar', 'baz', 'woo', 'zoo']) {
+        foreach my $exceptions ([], ['fxn'], ['net-fluiddb', 'test']) {
             my @e = @$exceptions;
             push @e, $username if $pname eq 'closed';
             my $perm = Net::Fluidinfo::Permission->get($fin, $category, $paths{$category}, 'control');
