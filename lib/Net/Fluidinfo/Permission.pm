@@ -1,10 +1,38 @@
 package Net::Fluidinfo::Permission;
 use Moose;
-extends 'Net::Fluidinfo::ACL';
+extends 'Net::Fluidinfo::Base';
 
-has category => (is => 'ro', isa => 'Str');
-has path     => (is => 'ro', isa => 'Str');
-has action   => (is => 'ro', isa => 'Str');
+use MooseX::ClassAttribute;
+class_has Actions => (
+    is => 'ro',
+    isa => 'HashRef[ArrayRef[Str]]',
+    default => sub {{
+        'namespaces' => [qw(create update delete list control)],
+        'tags'       => [qw(update delete control)],
+        'tag-values' => [qw(write read delete control)]
+    }}
+);
+
+has category   => (is => 'ro', isa => 'Str');
+has path       => (is => 'ro', isa => 'Str');
+has action     => (is => 'ro', isa => 'Str');
+has policy     => (is => 'rw', isa => 'Str');
+has exceptions => (is => 'rw', isa => 'ArrayRef[Str]');
+
+sub is_open {
+    my $self = shift;
+    $self->policy eq 'open' 
+}
+
+sub is_closed {
+    my $self = shift;
+    $self->policy eq 'closed' 
+}
+
+sub has_exceptions {
+    my $self = shift;
+    @{$self->exceptions} != 0;
+}
 
 sub get {
     my ($class, $fin, $category, $path, $action) = @_;
@@ -40,6 +68,7 @@ sub update {
 }
 
 no Moose;
+no MooseX::ClassAttribute;
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -69,10 +98,6 @@ Net::Fluidinfo::Permission - Fluidinfo permissions
 C<Net::Fluidinfo::Permission> models Fluidinfo permissions.
 
 =head1 USAGE
-
-=head2 Inheritance
-
-C<Net::Fluidinfo::Permission> is a subclass of L<Net::Fluidinfo::ACL>.
 
 =head2 Class methods
 

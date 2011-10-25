@@ -10,6 +10,17 @@ use Net::Fluidinfo::Namespace;
 use Net::Fluidinfo::Tag;
 use Net::Fluidinfo::TestUtils;
 
+my ($username, $password) = net_fluidinfo_dev_credentials;
+
+unless (defined $username && defined $password) {
+    plan skip_all => skip_all_message;
+    exit 0;
+}
+
+skip_suite_unless_run_all;
+
+use_ok('Net::Fluidinfo::Permission');
+
 sub is_permission {
     ok shift->isa('Net::Fluidinfo::Permission');
 }
@@ -25,22 +36,25 @@ sub check_perm {
     ok_sets_cmp $perm2->exceptions, $perm->exceptions;
 }
 
-my ($username, $password) = net_fluidinfo_dev_credentials;
-
-unless (defined $username && defined $password) {
-    plan skip_all => skip_all_message;
-    exit 0;
-}
-
-skip_suite_unless_run_all;
-
-use_ok('Net::Fluidinfo::Permission');
-
-my ($perm, $path, $ns, $tag);
-
 my $fin = Net::Fluidinfo->_new_for_net_fluidinfo_test_suite;
 $fin->username($username);
 $fin->password($password);
+
+# --- Predicates --------------------------------------------------------------
+
+my $perm = Net::Fluidinfo::Permission->new(fin => $fin);
+
+$perm->policy('open');
+ok $perm->is_open;
+
+$perm->policy('closed');
+ok $perm->is_closed;
+
+$perm->exceptions([]);
+ok !$perm->has_exceptions;
+
+$perm->exceptions(['test']);
+ok $perm->has_exceptions;
 
 # --- Close the top-level namespace -------------------------------------------
 
@@ -53,8 +67,8 @@ foreach my $action (@{Net::Fluidinfo::Permission->Actions->{namespaces}}) {
 
 # --- Seed data ---------------------------------------------------------------
 
-$path = "$username/" . random_name;
-$ns = Net::Fluidinfo::Namespace->new(
+my $path = "$username/" . random_name;
+my $ns = Net::Fluidinfo::Namespace->new(
     fin         => $fin,
     description => random_description,
     path        => $path
@@ -69,7 +83,7 @@ foreach my $action (@{Net::Fluidinfo::Permission->Actions->{namespaces}}) {
 }
 
 $path = "$username/" . random_name;
-$tag = Net::Fluidinfo::Tag->new(
+my $tag = Net::Fluidinfo::Tag->new(
     fin         => $fin,
     description => random_description,
     indexed     => 0,

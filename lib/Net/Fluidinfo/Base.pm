@@ -55,6 +55,7 @@ sub as_json_boolean {
 }
 
 no Moose;
+no MooseX::ClassAttribute;
 __PACKAGE__->meta->make_immutable;
 
 1;

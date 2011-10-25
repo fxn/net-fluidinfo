@@ -1,12 +1,16 @@
 Revision history for Net-Fluidinfo
 
-0.42	(Unreleased)
-		* /policies is gone and so is Net::Fluidinfo::Policy,
-		  now permissions inherit defaults from their parent.
+0.42	  (Unreleased)
+		    * /policies is gone and so is Net::Fluidinfo::Policy,
+		      now permissions inherit defaults from their parent.
 
-		* Now there's a delay between tagging and being able
-		  to search against that tag. The test suite has been
-		  revised to tolerate such delays.
+		    * Now there's a delay between tagging and being able
+		      to search against that tag. The test suite has been
+		      revised to tolerate such delays.
+
+        * Net::Fluidinfo::ACL is gone, it was a common ancestor
+          for policies and permissions only meant to be used
+          through inheritance.
 
 0.41    2011-08-16
         * Changes are no longer available in searches immediately.
