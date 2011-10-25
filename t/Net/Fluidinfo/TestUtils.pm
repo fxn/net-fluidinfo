@@ -61,11 +61,17 @@ sub skip_suite_unless_run_all {
     }
 }
 
+# This subroutine allows you to run a coderef until it returns true,
+# waiting one second between calls. If a threshold of one minute is
+# reached, we print a skip message and move on.
+#
+# Useful for testing searching after tagging for example, since new
+# tags are not visible immediately for searching.
 sub tolerate_delay(&) {
     my $code = shift;
 
     SKIP: {
-        for (my $n = 0; $n < 10; ++$n) {
+        for (my $n = 0; $n < 60; ++$n) {
             return if $code->();
             sleep 1;
         }

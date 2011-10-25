@@ -36,12 +36,11 @@ my @ids;
 
 tolerate_delay {
     @ids = Net::Fluidinfo::Object->search($fin, "has $path");
-    scalar @ids;
+    @ids == @object_ids;
 };
 
 @ids = Net::Fluidinfo::Object->search($fin, "has $path");
 ok_sets_cmp \@ids, \@object_ids;
-
 
 @ids = Net::Fluidinfo::Object->search($fin, "$path > -3 OR $path < 3");
 ok_sets_cmp \@ids, \@object_ids;
