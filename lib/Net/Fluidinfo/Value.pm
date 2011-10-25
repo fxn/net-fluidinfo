@@ -19,13 +19,13 @@ sub is_non_native {
     0;
 }
 
-sub new_from_mime_type_and_content {
-    my ($class, $mime_type, $content) = @_;
-    
+sub new_from_types_and_content {
+    my ($class, $mime_type, $fin_type, $content) = @_;
+
     # instead of ordinary use(), to play nice with inheritance
     require Net::Fluidinfo::Value::Native;
     if (Net::Fluidinfo::Value::Native->is_mime_type($mime_type)) {
-        Net::Fluidinfo::Value::Native->new_from_json($content);
+        Net::Fluidinfo::Value::Native->new_from_fin_type_and_json($fin_type, $content);
     } else {
         # instead of ordinary use(), to play nice with inheritance
         require Net::Fluidinfo::Value::NonNative;

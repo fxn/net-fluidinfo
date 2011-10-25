@@ -185,10 +185,12 @@ sub value {
         path       => $self->abs_path('objects', $self->id, $tag_path),
         on_success => sub {
             my $response = shift;
-            my $value_object = Net::Fluidinfo::Value->new_from_mime_type_and_content(
-                $response->headers->header('Content-Type'),
-                $response->content
-            );
+
+            my $mime_type    = $response->headers->header('Content-Type');
+            my $fin_type     = $response->headers->header('X-Fluiddb-Type');
+            my $content      = $response->content;
+            my $value_object = Net::Fluidinfo::Value->new_from_types_and_content($mime_type, $fin_type, $content);
+
             $list_context ? ($value_object->type, $value_object->value) : $value_object->value;
         }
     );

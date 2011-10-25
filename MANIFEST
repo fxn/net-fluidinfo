@@ -31,7 +31,6 @@ t/07-has_object.t
 t/09-base.t
 t/10-search.t
 t/11-has_path.t
-t/12-json.t
 t/13-value.t
 t/14-native.t
 t/15-non_native.t
