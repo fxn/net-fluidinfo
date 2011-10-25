@@ -153,7 +153,9 @@ A description of this tag.
 
 =item indexed (required)
 
-A flag that tells Fluidinfo whether this tag should be indexed.
+A flag that tells Fluidinfo whether this tag should be indexed. This attribute
+mirrors the Fluidinfo API, but please note that Fluidinfo currently ignores
+its value, nowadays all tags are indexed.
 
 =item namespace (optional, but dependent)
 
@@ -237,6 +239,9 @@ tag for this attribute to be initialized.
 =item $tag->indexed
 
 A flag, indicates whether this tag is indexed in Fluidinfo.
+
+This predicate mirrors the Fluidinfo API. Nowadays all tags are indexed,
+so this predicate returns always true.
 
 =item $tag->namespace
 

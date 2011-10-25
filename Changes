@@ -19,6 +19,10 @@ Revision history for Net-Fluidinfo
         * Documents the new recommended idioms for creation of
           namespaces and tags.
 
+        * Documents that all tags are indexed nowadays. Thus,
+          the indexed flag is kept to mirror the Fluidinfo API,
+          but the user can no longer set it.
+
 0.41    2011-08-16
         * Changes are no longer available in searches immediately.
           This release only adds a delay tolerance to the test suite.
