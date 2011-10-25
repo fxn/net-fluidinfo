@@ -16,6 +16,9 @@ Revision history for Net-Fluidinfo
           Net::Fluidinfo::Permission::get accept a namespace
           or tag in addition to a path.
 
+        * Documents the new recommended idioms for creation of
+          namespaces and tags.
+
 0.41    2011-08-16
         * Changes are no longer available in searches immediately.
           This release only adds a delay tolerance to the test suite.

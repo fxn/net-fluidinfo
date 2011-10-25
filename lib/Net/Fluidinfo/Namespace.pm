@@ -206,7 +206,12 @@ C<Net::Fluidinfo> provides a convenience shortcut for this method.
 
 =item $ns->create
 
-Creates the namespace in Fluidinfo.
+Creates the namespace in Fluidinfo. Please note that namespaces are
+created on the fly by Fluidinfo if they do not exist.
+
+Creating a namespace by hand may be useful for example if you want
+to change the inherited permissions right away. Other than that, it
+is recommended that you let Fluidinfo create namespaces as needed.
 
 =item $ns->update
 

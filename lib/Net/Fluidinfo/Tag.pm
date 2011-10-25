@@ -208,7 +208,14 @@ rule is that the username fragment is case-insensitive, and the rest is not.
 
 =item $tag->create
 
-Creates the tag in Fluidinfo.
+Creates the tag in Fluidinfo. Please note that tags are created on the
+fly by Fluidinfo if they do not exist.
+
+Creating a tag by hand may be useful for example if you want to change
+the inherited permissions right away. That may be interesting if you
+are going to store sensitive data that would be by default readable.
+Other than that, it is recommended that you let Fluidinfo create tags
+as needed.
 
 =item $tag->update
 
