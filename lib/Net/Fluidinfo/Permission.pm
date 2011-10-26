@@ -100,6 +100,10 @@ C<Net::Fluidinfo::Permission> models Fluidinfo permissions.
 
 =head1 USAGE
 
+=head2 Inheritance
+
+C<Net::Fluidinfo::Permission> is a subclass of L<Net::Fluidinfo::Base>.
+
 =head2 Class methods
 
 =over
