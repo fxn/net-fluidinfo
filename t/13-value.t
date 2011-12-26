@@ -19,42 +19,42 @@ ok !$v->is_native;
 ok !$v->is_non_native;
 ok !$v->type;
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content($nmt, 'null');
+$v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'null', 'null');
 ok $v->is_native;
 ok $v->type eq 'null';
 ok !defined $v->value;
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content($nmt, 'true');
+$v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'boolean', 'true');
 ok $v->is_native;
 ok $v->type eq 'boolean';
 ok $v->value;
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content($nmt, 'false');
+$v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'boolean', 'false');
 ok $v->is_native;
 ok $v->type eq 'boolean';
 ok !$v->value;
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content($nmt, '0');
+$v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'int', '0');
 ok $v->is_native;
 ok $v->type eq 'integer';
 ok $v->value == 0;
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content($nmt, '0.0');
+$v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'float', '0.0');
 ok $v->is_native;
 ok $v->type eq 'float';
 ok $v->value == 0;
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content($nmt, '"foo"');
+$v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'string', '"foo"');
 ok $v->is_native;
 ok $v->type eq 'string';
 ok $v->value eq 'foo';
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content($nmt, '["foo"]');
+$v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'list-of-strings', '["foo"]');
 ok $v->is_native;
 ok $v->type eq 'set';
 ok_sets_cmp $v->value, ['foo'];
 
-$v = Net::Fluidinfo::Value->new_from_mime_type_and_content('text/plain', '0');
+$v = Net::Fluidinfo::Value->new_from_types_and_content('text/plain', undef, '0');
 ok $v->is_non_native;
 ok $v->value eq '0';
 ok $v->type eq 'text/plain';

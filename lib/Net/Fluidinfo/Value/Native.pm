@@ -26,6 +26,9 @@ sub new_from_fin_type_and_json {
     $native_class->new(value => $class->json->decode($json));
 }
 
+# Fluidinfo types of native values are documented here:
+#
+# http://doc.fluidinfo.com/fluidDB/api/http.html#getting-the-type-of-primitive-tag-values
 sub class_for_fin_type {
     my ($class, $fin_type) = @_;
 
