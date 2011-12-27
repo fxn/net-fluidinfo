@@ -1,5 +1,14 @@
 Revision history for Net-Fluidinfo
 
+0.43    2011-12-27
+
+        * Changes the random name generator of the test suite
+          to workaround a new issue in Fluidinfo itself with
+          tag names containing colons, seen as 500s while
+          running some tests.
+
+        * Documentation improvements.
+
 0.42    2011-10-25
         * /policies is gone and so is Net::Fluidinfo::Policy,
           now permissions inherit defaults from their parent.
@@ -11,7 +20,7 @@ Revision history for Net-Fluidinfo
         * Net::Fluidinfo::ACL is gone, it was a common ancestor
           for policies and permissions only meant to be used
           through inheritance.
-        
+
         * The methods Net::Fluidinfo->get_permission, and
           Net::Fluidinfo::Permission::get accept a namespace
           or tag in addition to a path.
