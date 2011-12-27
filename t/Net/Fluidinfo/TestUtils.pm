@@ -30,7 +30,7 @@ sub random_name {
 sub random_token {
     my ($token, $separator) = @_;
     $separator ||= ' ';
-    join $separator, "Net::Fluidinfo", $token, time, rand;
+    join $separator, "Net-Fluidinfo", $token, time, rand;
 }
 
 # These are used to run the suites of policies and permissions. The dev user
