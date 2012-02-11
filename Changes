@@ -1,5 +1,13 @@
 Revision history for Net-Fluidinfo
 
+0.44    2012-02-11
+
+        * Fluidinfo no longer has sets of strings, now they
+          are lists of strings. This is a change that has
+          been deployed but not yet announcent.
+
+        * Updates copyrights.
+
 0.43    2011-12-27
 
         * Changes the random name generator of the test suite
