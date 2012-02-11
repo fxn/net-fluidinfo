@@ -55,8 +55,8 @@ sub class_for_fin_type {
             'String';
         } elsif ($fin_type eq 'list-of-strings') {
             # instead of ordinary use(), to play nice with inheritance
-            require Net::Fluidinfo::Value::Set;
-            'Set';
+            require Net::Fluidinfo::Value::ListOfStrings;
+            'ListOfStrings';
         } else {
             die "Fluidinfo has sent an unknown native type header: $fin_type\n";
         }
@@ -64,17 +64,24 @@ sub class_for_fin_type {
     "Net::Fluidinfo::Value::$type";
 }
 
-our %VALID_ALIASES = map { $_ => 1 } qw(null boolean integer float string set);
+our %TYPE_ALIAS_TO_CLASS = (
+  null            => 'Net::Fluidinfo::Value::Null',
+  boolean         => 'Net::Fluidinfo::Value::Boolean',
+  integer         => 'Net::Fluidinfo::Value::Integer',
+  float           => 'Net::Fluidinfo::Value::Float',
+  string          => 'Net::Fluidinfo::Value::String',
+  list_of_strings => 'Net::Fluidinfo::Value::ListOfStrings',
+);
 sub type_from_alias {
     my ($class, $alias) = @_;
-    "Net::Fluidinfo::Value::\u$alias" if exists $VALID_ALIASES{$alias};
+    $TYPE_ALIAS_TO_CLASS{$alias};
 }
 
+our %CLASS_TO_TYPE_CLASS = reverse %TYPE_ALIAS_TO_CLASS;
 sub type_alias {
     my $self = shift;
     my $class = ref $self || $self;
-    my ($type_alias) = $class =~ /::(\w+)$/;
-    lc $type_alias;
+    $CLASS_TO_TYPE_CLASS{$class};
 }
 
 sub to_json {

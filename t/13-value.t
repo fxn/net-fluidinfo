@@ -51,7 +51,7 @@ ok $v->value eq 'foo';
 
 $v = Net::Fluidinfo::Value->new_from_types_and_content($nmt, 'list-of-strings', '["foo"]');
 ok $v->is_native;
-ok $v->type eq 'set';
+ok $v->type eq 'list_of_strings';
 ok_sets_cmp $v->value, ['foo'];
 
 $v = Net::Fluidinfo::Value->new_from_types_and_content('text/plain', undef, '0');

@@ -226,21 +226,21 @@ ok $object->tag($tag, []);
 $value = $object->value($tag);
 ok_sets_cmp $value, [];
 ($type, $value) = $object->value($tag);
-ok $type eq 'set';
+ok $type eq 'list_of_strings';
 ok_sets_cmp $value, [];
 
 ok $object->tag($tag, ['foo', 'bar']);
 $value = $object->value($tag);
 ok_sets_cmp $value, ['foo', 'bar'];
 ($type, $value) = $object->value($tag);
-ok $type eq 'set';
+ok $type eq 'list_of_strings';
 ok_sets_cmp $value, ['foo', 'bar'];
 
-ok $object->tag($tag, set => [0, 1]);
+ok $object->tag($tag, list_of_strings => [0, 1]);
 $value = $object->value($tag);
 ok_sets_cmp $value, [0, 1];
 ($type, $value) = $object->value($tag);
-ok $type eq 'set';
+ok $type eq 'list_of_strings';
 ok_sets_cmp $value, [0, 1];
 
 ok $object->tag($tag, 'text/plain' => 'this is plain text');

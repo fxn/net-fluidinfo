@@ -9,14 +9,14 @@
 # If Fluidinfo ever adds more set types "set" could be deprecated but still be
 # interpreted as set of strings to be backwards compatible for a while. The
 # public interface would be extended as needed.
-package Net::Fluidinfo::Value::Set;
+package Net::Fluidinfo::Value::ListOfStrings;
 use Moose;
 extends 'Net::Fluidinfo::Value::Native';
 
 sub to_json {
     my $self = shift;
     my @strings = map $self->json->encode("$_"), @{$self->value};
-    '[' . join(',', @strings) . ']'
+    '[' . join(',', @strings) . ']';
 }
 
 no Moose;

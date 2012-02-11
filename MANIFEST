@@ -20,7 +20,7 @@ lib/Net/Fluidinfo/Value/Float.pm
 lib/Net/Fluidinfo/Value/Native.pm
 lib/Net/Fluidinfo/Value/NonNative.pm
 lib/Net/Fluidinfo/Value/String.pm
-lib/Net/Fluidinfo/Value/Set.pm
+lib/Net/Fluidinfo/Value/ListOfStrings.pm
 t/00-fluidinfo.t
 t/01-object.t
 t/02-namespace.t
@@ -39,7 +39,7 @@ t/17-boolean.t
 t/18-integer.t
 t/19-float.t
 t/20-string.t
-t/21-set.t
+t/21-list_of_strings.t
 t/22-tagging.t
 t/Net/Fluidinfo/TestUtils.pm
 THANKS

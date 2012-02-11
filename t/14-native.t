@@ -20,19 +20,19 @@ ok(Net::Fluidinfo::Value::Native->is_mime_type($Net::Fluidinfo::Value::Native::M
 ok(!Net::Fluidinfo::Value::Native->is_mime_type('text/html'));
 ok(!Net::Fluidinfo::Value::Native->is_mime_type(undef));
 
-ok 'Net::Fluidinfo::Value::Null'    eq Net::Fluidinfo::Value::Native->class_for_fin_type('null');
-ok 'Net::Fluidinfo::Value::Boolean' eq Net::Fluidinfo::Value::Native->class_for_fin_type('boolean');
-ok 'Net::Fluidinfo::Value::Integer' eq Net::Fluidinfo::Value::Native->class_for_fin_type('int');
-ok 'Net::Fluidinfo::Value::Float'   eq Net::Fluidinfo::Value::Native->class_for_fin_type('float');
-ok 'Net::Fluidinfo::Value::String'  eq Net::Fluidinfo::Value::Native->class_for_fin_type('string');
-ok 'Net::Fluidinfo::Value::Set'     eq Net::Fluidinfo::Value::Native->class_for_fin_type('list-of-strings');
+ok 'Net::Fluidinfo::Value::Null'          eq Net::Fluidinfo::Value::Native->class_for_fin_type('null');
+ok 'Net::Fluidinfo::Value::Boolean'       eq Net::Fluidinfo::Value::Native->class_for_fin_type('boolean');
+ok 'Net::Fluidinfo::Value::Integer'       eq Net::Fluidinfo::Value::Native->class_for_fin_type('int');
+ok 'Net::Fluidinfo::Value::Float'         eq Net::Fluidinfo::Value::Native->class_for_fin_type('float');
+ok 'Net::Fluidinfo::Value::String'        eq Net::Fluidinfo::Value::Native->class_for_fin_type('string');
+ok 'Net::Fluidinfo::Value::ListOfStrings' eq Net::Fluidinfo::Value::Native->class_for_fin_type('list-of-strings');
 
-ok "Net::Fluidinfo::Value::Null"    eq Net::Fluidinfo::Value::Native->type_from_alias('null');
-ok "Net::Fluidinfo::Value::Boolean" eq Net::Fluidinfo::Value::Native->type_from_alias('boolean');
-ok "Net::Fluidinfo::Value::Integer" eq Net::Fluidinfo::Value::Native->type_from_alias('integer');
-ok "Net::Fluidinfo::Value::Float"   eq Net::Fluidinfo::Value::Native->type_from_alias('float');
-ok "Net::Fluidinfo::Value::String"  eq Net::Fluidinfo::Value::Native->type_from_alias('string');
-ok "Net::Fluidinfo::Value::Set"     eq Net::Fluidinfo::Value::Native->type_from_alias('set');
+ok "Net::Fluidinfo::Value::Null"          eq Net::Fluidinfo::Value::Native->type_from_alias('null');
+ok "Net::Fluidinfo::Value::Boolean"       eq Net::Fluidinfo::Value::Native->type_from_alias('boolean');
+ok "Net::Fluidinfo::Value::Integer"       eq Net::Fluidinfo::Value::Native->type_from_alias('integer');
+ok "Net::Fluidinfo::Value::Float"         eq Net::Fluidinfo::Value::Native->type_from_alias('float');
+ok "Net::Fluidinfo::Value::String"        eq Net::Fluidinfo::Value::Native->type_from_alias('string');
+ok "Net::Fluidinfo::Value::ListOfStrings" eq Net::Fluidinfo::Value::Native->type_from_alias('list_of_strings');
 ok !Net::Fluidinfo::Value::Native->type_from_alias('unknown alias');
 
 done_testing;
