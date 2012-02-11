@@ -283,7 +283,7 @@ Xavier Noria (FXN), E<lt>fxn@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2009-2011 Xavier Noria
+Copyright (C) 2009-2012 Xavier Noria
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
