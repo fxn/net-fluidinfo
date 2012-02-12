@@ -13,7 +13,7 @@ use Net::Fluidinfo::Value::Boolean;
 use Net::Fluidinfo::Value::Integer;
 use Net::Fluidinfo::Value::Float;
 use Net::Fluidinfo::Value::String;
-use Net::Fluidinfo::Value::Set;
+use Net::Fluidinfo::Value::ListOfStrings;
 
 has id        => (is => 'ro', isa => 'Str', writer => '_set_id', predicate => 'has_id');
 has about     => (is => 'rw', isa => 'Str', predicate => 'has_about');
@@ -135,7 +135,7 @@ sub tag_fin_value_or_scalar {
     if (defined $value) {
         if (ref $value) {
             if (ref $value eq 'ARRAY') {
-                $value = Net::Fluidinfo::Value::Set->new(value => $value);
+                $value = Net::Fluidinfo::Value::ListOfStrings->new(value => $value);
             } elsif (blessed $value && $value->isa('Net::Fluidinfo::Value')) {
                 # fine, do nothing
             } else {

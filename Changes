@@ -1,5 +1,9 @@
 Revision history for Net-Fluidinfo
 
+0.45    2012-02-12
+
+        * Quick fix.
+
 0.44    2012-02-11
 
         * Fluidinfo no longer has sets of strings, now they
